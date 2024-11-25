@@ -37,4 +37,15 @@
 	<div class="bg-gray-300 w-[1px] self-stretch hidden xl:block">&nbsp;</div>
 
 	<QuickStatsBox icon="access_time" title="Last check" value={lastSuccessfulCheck} />
+
+	<div class="bg-gray-300 w-[1px] self-stretch hidden xl:block">&nbsp;</div>
+
+	<QuickStatsBox icon="smartphone" title="Active devices" value={stats?.activeDevices} />
+
+	<div class="bg-gray-300 w-[1px] self-stretch hidden xl:block">&nbsp;</div>
+
+	<QuickStatsBox icon="chair" title="Max devices" value={stats?.maxDevices} />
+
+	<div class="bg-gray-300 w-[1px] self-stretch hidden xl:block">&nbsp;</div>
+
 </div>

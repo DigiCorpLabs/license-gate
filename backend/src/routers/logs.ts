@@ -1,7 +1,7 @@
-import { Prisma } from "@prisma/client";
-import { z } from "zod";
-import { prisma } from "../prisma";
-import { protectedProcedure, router } from "../trpc";
+import {Prisma} from "@prisma/client";
+import {z} from "zod";
+import {prisma} from "../prisma";
+import {protectedProcedure, router} from "../trpc";
 
 const validationResultSchema = z.enum([
   "VALID",
@@ -14,7 +14,7 @@ const validationResultSchema = z.enum([
 ]);
 
 export const logsRouter = router({
-  quickStats: protectedProcedure.query(async ({ ctx }) => {
+  quickStats: protectedProcedure.query(async ({ctx}) => {
     // Active licenses
     // Successful checks in the last 7 days (and 7 days before that)
     // Failed checks in the last 7 days (and 7 days before that)
@@ -27,6 +27,8 @@ export const logsRouter = router({
       successfulCheckPrevious7Days,
       failedCheckPrevious7Days,
       lastSuccessfulCheck,
+      activeDevices,
+      maxDevices,
     ] = await Promise.all([
       prisma.license.count({
         where: {
@@ -95,6 +97,19 @@ export const logsRouter = router({
           timestamp: "desc",
         },
       }),
+      prisma.device.count({
+        where: {
+          userId: ctx.userId,
+          isActive: true,
+        },
+      }),
+      prisma.user.findUnique({
+        where: {
+          id: ctx.userId,
+        },
+      }).then((user) => {
+        return user?.maxDevices ?? 'N/A'
+      }),
     ]);
 
     return {
@@ -104,6 +119,8 @@ export const logsRouter = router({
       successfulCheckPrevious7Days,
       failedCheckPrevious7Days,
       lastSuccessfulCheck: lastSuccessfulCheck?.timestamp,
+      activeDevices,
+      maxDevices,
     };
   }),
 
@@ -117,9 +134,9 @@ export const logsRouter = router({
     )
     .query(
       async ({
-        ctx: { userId },
-        input: { interval, intervalCount, licenseId },
-      }) => {
+               ctx: {userId},
+               input: {interval, intervalCount, licenseId},
+             }) => {
         return getHistogramData({
           interval,
           intervalCount,
@@ -142,7 +159,7 @@ export const logsRouter = router({
       })
     )
     .query(
-      async ({ ctx: { userId }, input: { filter, size, after, before } }) => {
+      async ({ctx: {userId}, input: {filter, size, after, before}}) => {
         const where: Prisma.LogWhereInput = {
           userId,
         };
@@ -152,15 +169,15 @@ export const logsRouter = router({
         }
 
         if (filter?.result) {
-          where.result = { in: filter.result };
+          where.result = {in: filter.result};
         }
 
         if (after) {
-          where.id = { gt: after };
+          where.id = {gt: after};
         }
 
         if (before) {
-          where.id = { lt: before };
+          where.id = {lt: before};
         }
 
         const logs = await prisma.log.findMany({
@@ -283,10 +300,10 @@ function getIntervalDates(
 }
 
 function buildHistogramQuery({
-  interval,
-  intervalCount,
-  licenseId,
-}: HistogramRequest) {
+                               interval,
+                               intervalCount,
+                               licenseId,
+                             }: HistogramRequest) {
   let timeFormat: string;
   let dateTrunc: string;
 
@@ -312,19 +329,16 @@ function buildHistogramQuery({
   }
 
   return `
-    SELECT 
-      DATE_FORMAT(timestamp, '${timeFormat}') as time_interval,
-      result = 'VALID' as is_valid,
-      COUNT(*) as log_count
-    FROM 
-      Log
-    WHERE 
-      timestamp >= UTC_TIMESTAMP() - INTERVAL ${intervalCount} ${dateTrunc.toUpperCase()}
-      AND userId = ?
-      ${licenseId ? `AND licenseId = ?` : ""}
-    GROUP BY 
-      time_interval, is_valid
-    ORDER BY 
-      time_interval
+      SELECT DATE_FORMAT(timestamp, '${timeFormat}') as time_interval,
+             result = 'VALID'                        as is_valid,
+             COUNT(*)                                as log_count
+      FROM Log
+      WHERE
+          timestamp >= UTC_TIMESTAMP() - INTERVAL ${intervalCount} ${dateTrunc.toUpperCase()}
+        AND userId = ? ${licenseId ? `AND licenseId = ?` : ""}
+      GROUP BY
+          time_interval, is_valid
+      ORDER BY
+          time_interval
   `;
 }
