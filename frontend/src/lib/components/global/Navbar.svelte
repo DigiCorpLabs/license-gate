@@ -27,9 +27,51 @@
 			primary: true,
 		},
 		{
+			name: 'Onboarding',
+			icon: 'handshake',
+			href: '/onboarding',
+			primary: true,
+		},
+		{
+			name: 'Secure Code',
+			icon: 'qr_code',
+			href: '/secure-codes',
+			primary: true,
+		},
+		{
+			name: 'Users',
+			icon: 'person',
+			href: '/users',
+			primary: true,
+		},
+		{
 			name: 'Devices',
 			icon: 'smartphone',
 			href: '/devices',
+			primary: true,
+		},
+		{
+			name: 'Policies',
+			icon: 'policy',
+			href: '/policies',
+			primary: true,
+		},
+		{
+			name: 'Geo Positions',
+			icon: 'satellite_alt',
+			href: '/geo-positions',
+			primary: true,
+		},
+		{
+			name: 'Clients',
+			icon: 'desktop_windows',
+			href: '/clients',
+			primary: true,
+		},
+		{
+			name: 'Networks',
+			icon: 'router',
+			href: '/networks',
 			primary: true,
 		},
 		{
@@ -39,13 +81,13 @@
 			primary: true,
 		},
 		{
-			name: 'API keys',
+			name: 'API Keys',
 			icon: 'lock_open',
 			href: '/api-keys',
 			primary: false,
 		},
 		{
-			name: 'Account settings',
+			name: 'Account Settings',
 			icon: 'settings',
 			href: '/settings/account',
 			primary: true,
