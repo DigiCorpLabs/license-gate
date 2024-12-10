@@ -3,6 +3,7 @@
 	import SmallSelector from '../../../lib/components/basics/SmallSelector.svelte'
 	import QuickStatsRow from '../../../lib/components/dashboard/QuickStatsRow.svelte'
 	import HistogramChart from '../../../lib/components/stats/HistogramChart.svelte'
+	import DonutChart from "$lib/components/stats/DonutChart.svelte";
 
 	const INTERVAL_TYPES = [
 		{
@@ -46,7 +47,7 @@
 	<hr class="my-4" />
 	<div class="flex items-center justify-between">
 		<h2 class="text-xl font-semibold text-gray-900">
-			License requests ({selectedIntervalType.label})
+			License Requests ({selectedIntervalType.label})
 		</h2>
 
 		<SmallSelector bind:value={selectedIntervalType} items={INTERVAL_TYPES}>
@@ -64,4 +65,11 @@
 		intervalType={selectedIntervalType.type}
 		intervalCount={selectedIntervalType.count}
 	/>
+
+	<hr class="my-4" />
+	<h2 class="text-xl font-semibold text-gray-900">
+		License Usage
+	</h2>
+	<DonutChart/>
+
 </div>
