@@ -27,8 +27,8 @@ model User {
 
   apiKeys ApiKey[]
 
-  maxDevices      Int       @default(0)
-  currentDevices  Device[]
+  maxDevices     Int      @default(0)
+  currentDevices Device[]
 }
 
 enum ReplenishInterval {
@@ -64,8 +64,11 @@ model License {
 
   logs Log[]
 
-  maxDevices      Int       @default(0)
-  currentDevices  Device[]
+  maxDevices     Int      @default(10)
+  currentDevices Device[]
+
+  maxUsers   Int @default(10)
+  revisionId Int @default(1)
 
   @@unique([userId, licenseKey])
 }
@@ -81,16 +84,16 @@ enum ValidationResult {
 }
 
 model Log {
-  id        Int     @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
 
   license   License @relation(fields: [licenseId], references: [id], onDelete: Cascade)
   licenseId Int
 
-  device      Device    @relation(fields: [deviceId], references: [deviceId], onDelete: Cascade)
-  deviceId    String
+  device   Device @relation(fields: [deviceId], references: [deviceId], onDelete: Cascade)
+  deviceId String
 
   ip        String
   result    ValidationResult
@@ -111,15 +114,26 @@ model ApiKey {
 }
 
 model Device {
-  deviceId  String      @id
+  deviceId  String @id
   licenseId Int
   userId    Int
 
-  logs      Log[]
+  logs Log[]
 
-  createdAt DateTime    @default(now())
-  isActive  Boolean     @default(true)
+  createdAt DateTime @default(now())
+  isActive  Boolean  @default(true)
 
-  license   License     @relation(fields: [licenseId], references: [id])
-  user      User        @relation(fields: [userId]   , references: [id])
+  license License @relation(fields: [licenseId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+}
+
+model Token {
+  id        Int       @id @default(autoincrement())
+  md        Int
+  mu        Int
+  exp       DateTime
+  idc       String    @unique
+  idr       Int       @default(1)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
 }

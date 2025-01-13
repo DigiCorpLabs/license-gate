@@ -67,6 +67,8 @@ interface ValidationResponse {
    * @example "23fa25/7dd..."
    */
   signedChallenge?: string;
+
+  jwt?: string;
 }
 
 /**
@@ -245,5 +247,6 @@ async function processLicenseVerification(
     valid: verificationResult.result === "VALID",
     result: verificationResult.result,
     signedChallenge: verificationResult.signedChallenge,
+    jwt: verificationResult.jwt,
   };
 }

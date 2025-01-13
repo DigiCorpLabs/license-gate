@@ -1,6 +1,9 @@
 import {License, Prisma} from "@prisma/client";
 import NodeRSA from "node-rsa";
 import {prisma} from "../prisma";
+import {readFileSync} from "node:fs";
+import {TokenService} from "./token.controller";
+require('dotenv').config();
 
 const DEBUG_TIME = false;
 
@@ -13,6 +16,7 @@ export interface VerificationOptions {
 type VerificationResultStatus = Prisma.LogCreateInput["result"];
 
 export interface VerificationResult {
+  jwt?: string;
   result: VerificationResultStatus;
   signedChallenge?: string;
 }
@@ -224,7 +228,20 @@ export async function verifyLicense(
     console.log("Time to log, sign and decrement: ", Date.now() - time);
   }
 
+  const exp = Math.floor(license.expirationDate!.getTime() / 1000)
+
+  const payload = {
+    idc: `${license.licenseKey}/${license.userId}`,
+    exp: exp ?? null,
+    idr: license.revisionId,
+    mu: license.maxUsers,
+    md: license.maxDevices
+  }
+  const privateKeyPath = process.env.PRIVATE_KEY
+  const privateKey = readFileSync(privateKeyPath!, 'utf-8');
+
   return {
+    jwt: new TokenService(privateKey).createJwt(payload),
     result: "VALID",
     signedChallenge,
   };
