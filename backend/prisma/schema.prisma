@@ -50,7 +50,7 @@ model License {
 
   ipLimit        Int?
   licenseScope   String?
-  expirationDate DateTime?
+  expirationDate DateTime
 
   validationPoints  Int?
   validationLimit   Int?

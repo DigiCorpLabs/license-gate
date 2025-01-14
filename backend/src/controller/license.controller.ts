@@ -174,9 +174,6 @@ export class LicenseService {
               gt: new Date(),
             },
           },
-          {
-            expirationDate: null,
-          },
         ],
         active: true,
       },
@@ -199,9 +196,6 @@ export class LicenseService {
           expirationDate: {
             gt: new Date(),
           },
-        },
-        {
-          expirationDate: null,
         },
       ];
       where.active = true;

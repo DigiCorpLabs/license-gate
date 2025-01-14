@@ -209,11 +209,11 @@ export async function verifyLicense(
     console.log("Time to log, sign and decrement: ", Date.now() - time);
   }
 
-  const exp = Math.floor(license.expirationDate!.getTime() / 1000)
+  const exp = Math.floor(license.expirationDate.getTime() / 1000)
 
   const payload = {
     idc: `${license.userId}/${license.licenseKey}`,
-    exp: exp ?? null,
+    exp: exp,
     idr: license.revisionId,
     mu: license.maxUsers,
     md: license.maxDevices

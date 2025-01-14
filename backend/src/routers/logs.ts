@@ -38,9 +38,6 @@ export const logsRouter = router({
                 gt: new Date(),
               },
             },
-            {
-              expirationDate: null,
-            },
           ],
         },
       }),

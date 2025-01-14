@@ -79,7 +79,7 @@ interface License {
    * See https://docs.licensegate.io/restriction-options/expiration
    * @default null
    */
-  expirationDate: Date | null;
+  expirationDate: Date;
 
   /**
    * Current amount of validation points. This is used for rate limiting.
