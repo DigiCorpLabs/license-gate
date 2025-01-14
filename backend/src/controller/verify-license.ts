@@ -165,24 +165,6 @@ export async function verifyLicense(
 
   const backgroundPromises: Promise<unknown>[] = [];
 
-  backgroundPromises.push(
-    prisma.device.upsert({
-      where: {
-        deviceId: options.metadata || "",
-      },
-      create: {
-        deviceId: options.metadata || "",
-        userId: userId,
-        licenseId: license.id,
-      },
-      update: {
-        deviceId: options.metadata || "",
-        userId: userId,
-        licenseId: license.id,
-      }
-    })
-  )
-
   await Promise.all(backgroundPromises);
 
   // Create log entry
@@ -194,7 +176,6 @@ export async function verifyLicense(
         ip,
         result: status,
         metadata: options.metadata || "",
-        deviceId: options.metadata || "",
       },
     })
   );
@@ -231,7 +212,7 @@ export async function verifyLicense(
   const exp = Math.floor(license.expirationDate!.getTime() / 1000)
 
   const payload = {
-    idc: `${license.licenseKey}/${license.userId}`,
+    idc: `${license.userId}/${license.licenseKey}`,
     exp: exp ?? null,
     idr: license.revisionId,
     mu: license.maxUsers,

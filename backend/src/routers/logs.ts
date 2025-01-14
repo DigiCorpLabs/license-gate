@@ -27,8 +27,6 @@ export const logsRouter = router({
       successfulCheckPrevious7Days,
       failedCheckPrevious7Days,
       lastSuccessfulCheck,
-      activeDevices,
-      maxDevices,
     ] = await Promise.all([
       prisma.license.count({
         where: {
@@ -97,19 +95,6 @@ export const logsRouter = router({
           timestamp: "desc",
         },
       }),
-      prisma.device.count({
-        where: {
-          userId: ctx.userId,
-          isActive: true,
-        },
-      }),
-      prisma.user.findUnique({
-        where: {
-          id: ctx.userId,
-        },
-      }).then((user) => {
-        return user?.maxDevices ?? 'N/A'
-      }),
     ]);
 
     return {
@@ -119,8 +104,6 @@ export const logsRouter = router({
       successfulCheckPrevious7Days,
       failedCheckPrevious7Days,
       lastSuccessfulCheck: lastSuccessfulCheck?.timestamp,
-      activeDevices,
-      maxDevices,
     };
   }),
 

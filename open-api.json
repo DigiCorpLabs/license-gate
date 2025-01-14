@@ -7,94 +7,6 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"Token": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"md": {
-						"type": "number",
-						"format": "double"
-					},
-					"mu": {
-						"type": "number",
-						"format": "double"
-					},
-					"exp": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"idc": {
-						"type": "string"
-					},
-					"idr": {
-						"type": "number",
-						"format": "double"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time",
-						"nullable": true
-					}
-				},
-				"required": [
-					"id",
-					"md",
-					"mu",
-					"exp",
-					"idc",
-					"idr",
-					"createdAt",
-					"updatedAt"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ResponseError_token-with-same-code-already-exists_": {
-				"properties": {
-					"error": {
-						"type": "string",
-						"enum": [
-							"token-with-same-code-already-exists"
-						],
-						"nullable": false
-					},
-					"details": {
-						"description": "Additional details about the error.",
-						"default": {}
-					}
-				},
-				"required": [
-					"error"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ResponseError_invalid-schema_": {
-				"properties": {
-					"error": {
-						"type": "string",
-						"enum": [
-							"invalid-schema"
-						],
-						"nullable": false
-					},
-					"details": {
-						"description": "Additional details about the error.",
-						"default": {}
-					}
-				},
-				"required": [
-					"error"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"ReplenishInterval": {
 				"type": "string",
 				"enum": [
@@ -188,6 +100,14 @@
 						"type": "string",
 						"format": "date-time",
 						"description": "Date the license was created."
+					},
+					"maxUsers": {
+						"type": "number",
+						"format": "double"
+					},
+					"maxDevices": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
@@ -204,7 +124,9 @@
 					"validationLimit",
 					"replenishAmount",
 					"replenishInterval",
-					"createdAt"
+					"createdAt",
+					"maxUsers",
+					"maxDevices"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -235,6 +157,26 @@
 						"type": "string",
 						"enum": [
 							"unauthorized"
+						],
+						"nullable": false
+					},
+					"details": {
+						"description": "Additional details about the error.",
+						"default": {}
+					}
+				},
+				"required": [
+					"error"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ResponseError_invalid-schema_": {
+				"properties": {
+					"error": {
+						"type": "string",
+						"enum": [
+							"invalid-schema"
 						],
 						"nullable": false
 					},
@@ -303,6 +245,14 @@
 						"$ref": "#/components/schemas/ReplenishInterval",
 						"description": "Interval to replenish validation points.\nSet to null for no rate limiting.\nSee https://docs.licensegate.io/restriction-options/rate-limit"
 					},
+					"maxUsers": {
+						"type": "number",
+						"format": "double"
+					},
+					"maxDevices": {
+						"type": "number",
+						"format": "double"
+					},
 					"licenseKey": {
 						"type": "string",
 						"description": "You can specify a custom license key, or one will be generated (UUIDv4).\nIf you specify a custom key, it must be unique."
@@ -318,7 +268,9 @@
 					"validationPoints",
 					"validationLimit",
 					"replenishAmount",
-					"replenishInterval"
+					"replenishInterval",
+					"maxUsers",
+					"maxDevices"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -400,6 +352,14 @@
 					"replenishInterval": {
 						"$ref": "#/components/schemas/ReplenishInterval",
 						"description": "Interval to replenish validation points.\nSet to null for no rate limiting.\nSee https://docs.licensegate.io/restriction-options/rate-limit"
+					},
+					"maxUsers": {
+						"type": "number",
+						"format": "double"
+					},
+					"maxDevices": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"type": "object",
@@ -433,6 +393,9 @@
 						"type": "string",
 						"description": "The challenge signed by the server. Only present if a challenge was provided in the request.",
 						"example": "23fa25/7dd..."
+					},
+					"jwt": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -482,59 +445,6 @@
 		"contact": {}
 	},
 	"paths": {
-		"/tokens/{licenseCode}": {
-			"post": {
-				"operationId": "Create",
-				"responses": {
-					"201": {
-						"description": "Created",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/Token"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Token with same code already exists",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ResponseError_token-with-same-code-already-exists_"
-								}
-							}
-						}
-					},
-					"422": {
-						"description": "Invalid schema",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ResponseError_invalid-schema_"
-								}
-							}
-						}
-					}
-				},
-				"description": "Create a new token.",
-				"summary": "Create token code",
-				"tags": [
-					"Public"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "licenseCode",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
 		"/admin/licenses": {
 			"post": {
 				"operationId": "Create",

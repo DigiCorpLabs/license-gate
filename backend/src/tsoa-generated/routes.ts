@@ -4,8 +4,6 @@
 import type { TsoaRoute } from '@tsoa/runtime';
 import {  fetchMiddlewares, ExpressTemplateService } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { TokenController } from './../routers/public/token.controller';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { LicenseController } from './../routers/public/license.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { LicenseVerifyController } from './../routers/public/license-verify.controller';
@@ -19,39 +17,6 @@ const expressAuthenticationRecasted = expressAuthentication as (req: ExRequest, 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "Token": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"double","required":true},
-            "md": {"dataType":"double","required":true},
-            "mu": {"dataType":"double","required":true},
-            "exp": {"dataType":"datetime","required":true},
-            "idc": {"dataType":"string","required":true},
-            "idr": {"dataType":"double","required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "updatedAt": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}],"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ResponseError_token-with-same-code-already-exists_": {
-        "dataType": "refObject",
-        "properties": {
-            "error": {"dataType":"enum","enums":["token-with-same-code-already-exists"],"required":true},
-            "details": {"dataType":"any","default":{},"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ResponseError_invalid-schema_": {
-        "dataType": "refObject",
-        "properties": {
-            "error": {"dataType":"enum","enums":["invalid-schema"],"required":true},
-            "details": {"dataType":"any","default":{},"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ReplenishInterval": {
         "dataType": "refAlias",
         "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["TEN_SECONDS"]},{"dataType":"enum","enums":["MINUTE"]},{"dataType":"enum","enums":["HOUR"]},{"dataType":"enum","enums":["DAY"]}],"validators":{}},
@@ -74,6 +39,8 @@ const models: TsoaRoute.Models = {
             "replenishAmount": {"dataType":"union","subSchemas":[{"dataType":"integer"},{"dataType":"enum","enums":[null]}],"default":null,"required":true},
             "replenishInterval": {"dataType":"union","subSchemas":[{"ref":"ReplenishInterval"},{"dataType":"enum","enums":[null]}],"default":null,"required":true},
             "createdAt": {"dataType":"datetime","required":true},
+            "maxUsers": {"dataType":"double","required":true},
+            "maxDevices": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
     },
@@ -96,6 +63,15 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ResponseError_invalid-schema_": {
+        "dataType": "refObject",
+        "properties": {
+            "error": {"dataType":"enum","enums":["invalid-schema"],"required":true},
+            "details": {"dataType":"any","default":{},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "LicenseCreateInput": {
         "dataType": "refObject",
         "properties": {
@@ -109,6 +85,8 @@ const models: TsoaRoute.Models = {
             "validationLimit": {"dataType":"integer","default":null,"required":true},
             "replenishAmount": {"dataType":"integer","default":null,"required":true},
             "replenishInterval": {"ref":"ReplenishInterval","default":null,"required":true},
+            "maxUsers": {"dataType":"double","required":true},
+            "maxDevices": {"dataType":"double","required":true},
             "licenseKey": {"dataType":"string"},
         },
         "additionalProperties": false,
@@ -137,6 +115,8 @@ const models: TsoaRoute.Models = {
             "validationLimit": {"dataType":"integer","default":null},
             "replenishAmount": {"dataType":"integer","default":null},
             "replenishInterval": {"ref":"ReplenishInterval","default":null},
+            "maxUsers": {"dataType":"double"},
+            "maxDevices": {"dataType":"double"},
         },
         "additionalProperties": false,
     },
@@ -152,6 +132,7 @@ const models: TsoaRoute.Models = {
             "valid": {"dataType":"boolean","required":true},
             "result": {"ref":"ValidationResult","required":true},
             "signedChallenge": {"dataType":"string"},
+            "jwt": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -183,37 +164,6 @@ export function RegisterRoutes(app: Router) {
 
 
     
-        app.post('/tokens/:licenseCode',
-            ...(fetchMiddlewares<RequestHandler>(TokenController)),
-            ...(fetchMiddlewares<RequestHandler>(TokenController.prototype.create)),
-
-            async function TokenController_create(request: ExRequest, response: ExResponse, next: any) {
-            const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
-                    licenseCode: {"in":"path","name":"licenseCode","required":true,"dataType":"string"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args, request, response });
-
-                const controller = new TokenController();
-
-              await templateService.apiHandler({
-                methodName: 'create',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: 201,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/admin/licenses',
             authenticateMiddleware([{"api_key":[]}]),
             ...(fetchMiddlewares<RequestHandler>(LicenseController)),
