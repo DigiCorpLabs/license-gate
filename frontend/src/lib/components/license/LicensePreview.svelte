@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { goto } from '$app/navigation'
-	import { createEventDispatcher, onMount } from 'svelte'
-	import { writable } from 'svelte/store'
-	import { notifyLicenseRemoved, syncLicense } from '../../controller/license'
-	import { logSuccess } from '../../stores/alerts'
-	import { trpc, type ReadLicense } from '../../trpcClient'
+	import {goto} from '$app/navigation'
+	import {createEventDispatcher, onMount} from 'svelte'
+	import {writable} from 'svelte/store'
+	import {notifyLicenseRemoved, syncLicense} from '../../controller/license'
+	import {logSuccess} from '../../stores/alerts'
+	import {type ReadLicense, trpc} from '../../trpcClient'
 	import Button from '../basics/Button.svelte'
 	import ConfirmationCardTrigger from '../basics/ConfirmationCardTrigger.svelte'
 	import CopyText from '../basics/CopyText.svelte'
@@ -12,10 +12,14 @@
 	import PageTitle from '../basics/PageTitle.svelte'
 	import LicenseLimitInfo from './LicenseLimitInfo.svelte'
 	import LicenseStatusChip from './LicenseStatusChip.svelte'
+	import {qr as svgQR} from '@svelte-put/qr/svg';
 
 	export let license: ReadLicense
 
 	const licenseStore = writable(license)
+
+	const data = license.userId + '/' + license.licenseKey
+	const logo = 'https://pbs.twimg.com/profile_images/1629168416836706304/TPhvrSCB_400x400.jpg';
 
 	onMount(() => {
 		return syncLicense(licenseStore, ['active'], () => dispatchEvent('exit'))
@@ -64,7 +68,7 @@
 <h2
 	class="flex items-center justify-between w-full px-4 py-2 text-xl tracking-widest bg-gray-100 rounded-md"
 >
-	{license.licenseKey}
+	{data}
 	<CopyText class="text-xl" text={license.licenseKey} />
 </h2>
 
@@ -110,6 +114,10 @@
 <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
 	<LicenseLimitInfo {license} />
 </div>
+
+{#if data}
+	<svg use:svgQR={{ data, logo }} />
+{/if}
 
 <style>
 </style>

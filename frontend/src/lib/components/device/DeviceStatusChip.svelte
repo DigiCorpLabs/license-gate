@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { ListLicense } from '../../trpcClient'
+	import type { ListDevice } from '../../trpcClient'
 	import Chip from '../basics/Chip.svelte'
 
-	export let license: ListLicense
+	export let device: ListDevice
 
 	let className = ''
 
@@ -12,17 +12,17 @@
 	let statusColor = ''
 
 	$: {
-		if (!license.active) {
+		if (!device.active) {
 			statusText = 'Inactive'
 			statusColor = 'gray-700'
-		} else if (license.expirationDate && license.expirationDate < new Date()) {
+		} else if (device.expirationDate && device.expirationDate < new Date()) {
 			statusText = 'Expired'
 			statusColor = 'red-500'
-		} else if (license.expirationDate) {
+		} else if (device.expirationDate) {
 			statusText =
-				'Expires in ' + getRelativeTimeString(license.expirationDate.getTime() - Date.now())
+				'Expires in ' + getRelativeTimeString(device.expirationDate.getTime() - Date.now())
 
-			if (license.expirationDate.getTime() - Date.now() < 1000 * 60 * 60 * 24 * 7) {
+			if (device.expirationDate.getTime() - Date.now() < 1000 * 60 * 60 * 24 * 7) {
 				statusColor = 'yellow-500'
 			} else {
 				statusColor = 'blue-500'
@@ -41,7 +41,7 @@
 		const durationHours = Math.floor(durationMinutes / 60)
 		const durationDays = Math.floor(durationHours / 24)
 		const durationMonths = Math.floor(durationDays / 30)
-		const durationYears = Math.ceil(durationDays / 365)
+		const durationYears = Math.floor(durationDays / 365)
 
 		if (durationSeconds < 60) {
 			return `${durationSeconds} seconds`

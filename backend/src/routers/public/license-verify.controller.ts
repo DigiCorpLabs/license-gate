@@ -67,6 +67,8 @@ interface ValidationResponse {
    * @example "23fa25/7dd..."
    */
   signedChallenge?: string;
+
+  jwt?: string;
 }
 
 /**
@@ -213,7 +215,7 @@ export class LicenseVerifyController extends Controller {
 }
 
 function getIpFromRequest(req: express.Request): string {
-  return (req.headers["cf-connecting-ip"] as string | undefined) || req.ip;
+  return (req.headers["cf-connecting-ip"] as string | undefined) || req.ip || req.socket.remoteAddress || '';
 }
 
 async function processLicenseVerification(
@@ -245,5 +247,6 @@ async function processLicenseVerification(
     valid: verificationResult.result === "VALID",
     result: verificationResult.result,
     signedChallenge: verificationResult.signedChallenge,
+    jwt: verificationResult.jwt,
   };
 }

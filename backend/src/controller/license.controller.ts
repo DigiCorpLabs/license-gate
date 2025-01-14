@@ -32,6 +32,8 @@ export class LicenseService {
     userId: number;
   }) {
     const licenseKey = license.licenseKey || randomUUID();
+    const oneYearFromNow = new Date();
+    oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
 
     try {
       return await prisma.license.create({
@@ -39,6 +41,7 @@ export class LicenseService {
           ...license,
           userId: userId,
           licenseKey,
+          expirationDate: oneYearFromNow,
         },
       });
     } catch (e) {
