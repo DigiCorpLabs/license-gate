@@ -12,18 +12,13 @@
 	import PageTitle from '../basics/PageTitle.svelte'
 	import LicenseLimitInfo from './LicenseLimitInfo.svelte'
 	import LicenseStatusChip from './LicenseStatusChip.svelte'
-	import {Protocol} from "../../../../../backend/src/utils/constants.js";
-
-	import { qr as imgQR } from '@svelte-put/qr/img';
-	import ImgQR from '@svelte-put/qr/img/QR.svelte';
-	import { qr as svgQR } from '@svelte-put/qr/svg';
-	import SvgQR from '@svelte-put/qr/svg/QR.svelte';
+	import {qr as svgQR} from '@svelte-put/qr/svg';
 
 	export let license: ReadLicense
 
 	const licenseStore = writable(license)
 
-	const data = Protocol.ENTERPRISE + license.licenseKey + '#' + license.userId
+	const data = license.userId + '/' + license.licenseKey
 	const logo = 'https://pbs.twimg.com/profile_images/1629168416836706304/TPhvrSCB_400x400.jpg';
 
 	onMount(() => {

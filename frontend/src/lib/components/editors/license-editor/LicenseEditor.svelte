@@ -14,7 +14,7 @@
 	}
 </script>
 
-<div class="flex flex-col gap-12 xs:w-1/2">
+<div class="flex flex-col gap-8 xs:w-1/2">
 	<div>
 		<h2 class="pageSubTitle">License Key</h2>
 		<input
@@ -43,6 +43,14 @@
 
 	<div class="flex flex-col gap-4">
 		<h2 class="pageSubTitle">Limit License</h2>
+
+		<Labeled label="Max Users">
+			<input type="number" bind:value={entity.maxUsers} />
+		</Labeled>
+
+		<Labeled label="Max Devices">
+			<input type="number" bind:value={entity.maxDevices} />
+		</Labeled>
 
 		<LicenseLimitEditors bind:entity />
 	</div>

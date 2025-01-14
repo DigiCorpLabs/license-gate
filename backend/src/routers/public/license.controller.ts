@@ -118,6 +118,9 @@ interface License {
    * Date the license was created.
    */
   createdAt: Date;
+
+  maxUsers: number;
+  maxDevices: number;
 }
 
 /**
