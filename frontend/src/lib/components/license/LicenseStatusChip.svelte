@@ -41,7 +41,7 @@
 		const durationHours = Math.floor(durationMinutes / 60)
 		const durationDays = Math.floor(durationHours / 24)
 		const durationMonths = Math.floor(durationDays / 30)
-		const durationYears = Math.ceil(durationDays / 365)
+		const durationYears = Math.floor(durationDays / 365)
 
 		if (durationSeconds < 60) {
 			return `${durationSeconds} seconds`

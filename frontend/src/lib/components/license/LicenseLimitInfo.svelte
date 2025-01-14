@@ -7,18 +7,6 @@
 
 	$: LIMITS = [
 		{
-			name: 'Max Users',
-			text: `Limited to ${license.maxUsers} users.`,
-			active: license.maxUsers > 0,
-		},
-
-		{
-			name: 'Max Devices',
-			text: `Limited to ${license.maxDevices} devices.`,
-			active: license.maxDevices > 0,
-		},
-
-		{
 			name: 'IP Limit',
 			text: `Limited to ${license.ipLimit} IP addresses over 12 hours.`,
 			active: license.ipLimit !== null,

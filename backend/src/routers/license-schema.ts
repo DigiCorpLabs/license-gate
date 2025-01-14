@@ -18,9 +18,6 @@ export const licenseCreateSchema = z.object({
     .nullable(),
 
   licenseKey: z.string().min(1).max(100).optional(),
-
-  maxUsers: z.number().int().default(10),
-  maxDevices: z.number().int().default(10),
 });
 
 export type LicenseCreateInput = z.infer<typeof licenseCreateSchema>;

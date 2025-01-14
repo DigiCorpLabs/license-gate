@@ -23,9 +23,6 @@
 
 		// UUIDv4
 		licenseKey: self.crypto.randomUUID(),
-
-		maxDevices: 10,
-		maxUsers: 10,
 	}
 
 	let loadingCreate = false

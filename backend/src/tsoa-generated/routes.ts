@@ -1,10 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import type { TsoaRoute } from '@tsoa/runtime';
-import {  fetchMiddlewares, ExpressTemplateService } from '@tsoa/runtime';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { TokenController } from './../routers/public/token.controller';
+import { TsoaRoute, fetchMiddlewares, ExpressTemplateService } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { LicenseController } from './../routers/public/license.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -19,39 +16,6 @@ const expressAuthenticationRecasted = expressAuthentication as (req: ExRequest, 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "Token": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"double","required":true},
-            "md": {"dataType":"double","required":true},
-            "mu": {"dataType":"double","required":true},
-            "exp": {"dataType":"datetime","required":true},
-            "idc": {"dataType":"string","required":true},
-            "idr": {"dataType":"double","required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "updatedAt": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}],"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ResponseError_token-with-same-code-already-exists_": {
-        "dataType": "refObject",
-        "properties": {
-            "error": {"dataType":"enum","enums":["token-with-same-code-already-exists"],"required":true},
-            "details": {"dataType":"any","default":{},"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ResponseError_invalid-schema_": {
-        "dataType": "refObject",
-        "properties": {
-            "error": {"dataType":"enum","enums":["invalid-schema"],"required":true},
-            "details": {"dataType":"any","default":{},"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ReplenishInterval": {
         "dataType": "refAlias",
         "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["TEN_SECONDS"]},{"dataType":"enum","enums":["MINUTE"]},{"dataType":"enum","enums":["HOUR"]},{"dataType":"enum","enums":["DAY"]}],"validators":{}},
@@ -91,6 +55,15 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "error": {"dataType":"enum","enums":["unauthorized"],"required":true},
+            "details": {"dataType":"any","default":{},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ResponseError_invalid-schema_": {
+        "dataType": "refObject",
+        "properties": {
+            "error": {"dataType":"enum","enums":["invalid-schema"],"required":true},
             "details": {"dataType":"any","default":{},"required":true},
         },
         "additionalProperties": false,
@@ -171,55 +144,17 @@ const templateService = new ExpressTemplateService(models, {"noImplicitAdditiona
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
-
-
-
 export function RegisterRoutes(app: Router) {
-
     // ###########################################################################################################
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
-
-
-    
-        app.post('/tokens/:licenseCode',
-            ...(fetchMiddlewares<RequestHandler>(TokenController)),
-            ...(fetchMiddlewares<RequestHandler>(TokenController.prototype.create)),
-
-            async function TokenController_create(request: ExRequest, response: ExResponse, next: any) {
-            const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
-                    licenseCode: {"in":"path","name":"licenseCode","required":true,"dataType":"string"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args, request, response });
-
-                const controller = new TokenController();
-
-              await templateService.apiHandler({
-                methodName: 'create',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: 201,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/admin/licenses',
             authenticateMiddleware([{"api_key":[]}]),
             ...(fetchMiddlewares<RequestHandler>(LicenseController)),
             ...(fetchMiddlewares<RequestHandler>(LicenseController.prototype.create)),
 
-            async function LicenseController_create(request: ExRequest, response: ExResponse, next: any) {
+            function LicenseController_create(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
                     requestBody: {"in":"body","name":"requestBody","required":true,"ref":"LicenseCreateInput"},
@@ -233,7 +168,7 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new LicenseController();
 
-              await templateService.apiHandler({
+              templateService.apiHandler({
                 methodName: 'create',
                 controller,
                 response,
@@ -251,7 +186,7 @@ export function RegisterRoutes(app: Router) {
             ...(fetchMiddlewares<RequestHandler>(LicenseController)),
             ...(fetchMiddlewares<RequestHandler>(LicenseController.prototype.read)),
 
-            async function LicenseController_read(request: ExRequest, response: ExResponse, next: any) {
+            function LicenseController_read(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
                     licenseId: {"in":"path","name":"licenseId","required":true,"dataType":"double"},
@@ -266,7 +201,7 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new LicenseController();
 
-              await templateService.apiHandler({
+              templateService.apiHandler({
                 methodName: 'read',
                 controller,
                 response,
@@ -284,7 +219,7 @@ export function RegisterRoutes(app: Router) {
             ...(fetchMiddlewares<RequestHandler>(LicenseController)),
             ...(fetchMiddlewares<RequestHandler>(LicenseController.prototype.readByLicenseKey)),
 
-            async function LicenseController_readByLicenseKey(request: ExRequest, response: ExResponse, next: any) {
+            function LicenseController_readByLicenseKey(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
                     licenseKey: {"in":"path","name":"licenseKey","required":true,"dataType":"string"},
@@ -299,7 +234,7 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new LicenseController();
 
-              await templateService.apiHandler({
+              templateService.apiHandler({
                 methodName: 'readByLicenseKey',
                 controller,
                 response,
@@ -317,7 +252,7 @@ export function RegisterRoutes(app: Router) {
             ...(fetchMiddlewares<RequestHandler>(LicenseController)),
             ...(fetchMiddlewares<RequestHandler>(LicenseController.prototype.update)),
 
-            async function LicenseController_update(request: ExRequest, response: ExResponse, next: any) {
+            function LicenseController_update(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
                     licenseId: {"in":"path","name":"licenseId","required":true,"dataType":"double"},
@@ -332,7 +267,7 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new LicenseController();
 
-              await templateService.apiHandler({
+              templateService.apiHandler({
                 methodName: 'update',
                 controller,
                 response,
@@ -350,7 +285,7 @@ export function RegisterRoutes(app: Router) {
             ...(fetchMiddlewares<RequestHandler>(LicenseController)),
             ...(fetchMiddlewares<RequestHandler>(LicenseController.prototype.delete)),
 
-            async function LicenseController_delete(request: ExRequest, response: ExResponse, next: any) {
+            function LicenseController_delete(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
                     licenseId: {"in":"path","name":"licenseId","required":true,"dataType":"double"},
@@ -364,7 +299,7 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new LicenseController();
 
-              await templateService.apiHandler({
+              templateService.apiHandler({
                 methodName: 'delete',
                 controller,
                 response,
@@ -382,7 +317,7 @@ export function RegisterRoutes(app: Router) {
             ...(fetchMiddlewares<RequestHandler>(LicenseController)),
             ...(fetchMiddlewares<RequestHandler>(LicenseController.prototype.list)),
 
-            async function LicenseController_list(request: ExRequest, response: ExResponse, next: any) {
+            function LicenseController_list(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
                     take: {"default":10,"in":"query","name":"take","dataType":"integer","validators":{"isInt":{"errorMsg":"take"}}},
@@ -399,7 +334,7 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new LicenseController();
 
-              await templateService.apiHandler({
+              templateService.apiHandler({
                 methodName: 'list',
                 controller,
                 response,
@@ -416,7 +351,7 @@ export function RegisterRoutes(app: Router) {
             ...(fetchMiddlewares<RequestHandler>(LicenseVerifyController)),
             ...(fetchMiddlewares<RequestHandler>(LicenseVerifyController.prototype.verifyLicenseGet)),
 
-            async function LicenseVerifyController_verifyLicenseGet(request: ExRequest, response: ExResponse, next: any) {
+            function LicenseVerifyController_verifyLicenseGet(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},
                     userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
@@ -434,7 +369,7 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new LicenseVerifyController();
 
-              await templateService.apiHandler({
+              templateService.apiHandler({
                 methodName: 'verifyLicenseGet',
                 controller,
                 response,
@@ -451,7 +386,7 @@ export function RegisterRoutes(app: Router) {
             ...(fetchMiddlewares<RequestHandler>(LicenseVerifyController)),
             ...(fetchMiddlewares<RequestHandler>(LicenseVerifyController.prototype.verifyLicensePost)),
 
-            async function LicenseVerifyController_verifyLicensePost(request: ExRequest, response: ExResponse, next: any) {
+            function LicenseVerifyController_verifyLicensePost(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},
                     userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
@@ -467,7 +402,7 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new LicenseVerifyController();
 
-              await templateService.apiHandler({
+              templateService.apiHandler({
                 methodName: 'verifyLicensePost',
                 controller,
                 response,
