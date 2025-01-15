@@ -6,6 +6,9 @@
 	import { logSuccess } from '../../../../lib/stores/alerts'
 	import { trpc, type CreateLicense } from '../../../../lib/trpcClient'
 
+	const oneYearFromNow = new Date();
+	oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
+
 	let license: CreateLicense = {
 		name: '',
 		notes: '',
@@ -14,7 +17,7 @@
 
 		ipLimit: null,
 		licenseScope: null,
-		expirationDate: null,
+		expirationDate: oneYearFromNow,
 
 		validationPoints: null,
 		validationLimit: null,
